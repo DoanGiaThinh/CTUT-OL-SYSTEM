@@ -33,6 +33,17 @@ CREATE TABLE IF NOT EXISTS Guides (
     content TEXT NOT NULL,
     media_url TEXT
 );
+
+CREATE TABLE Articles (
+    id SERIAL PRIMARY KEY,
+    db_id INT REFERENCES Databases(id) ON DELETE CASCADE, -- Liên kết với CSDL gốc (VD: arXiv)
+    identifier VARCHAR(255) UNIQUE NOT NULL, -- Mã ID bài báo (do OAI-PMH cấp)
+    title TEXT NOT NULL,
+    authors TEXT,
+    abstract TEXT,
+    date_published VARCHAR(50),
+    url TEXT NOT NULL
+);
 """
 
 def create_tables():
