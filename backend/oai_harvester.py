@@ -8,6 +8,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Link OAI-PMH chuẩn của arXiv
 OAI_URL = 'http://export.arxiv.org/oai2'
+# OAI_URL = 'https://www.ncbi.nlm.nih.gov/pmc/oai/oai.cgi' # Link của thư viện Y khoa PubMed
 
 def harvest_arxiv_math():
     print(f"Đang kết nối đến OAI-PMH của arXiv...")
@@ -15,6 +16,7 @@ def harvest_arxiv_math():
     
     # Lấy dữ liệu với định dạng oai_dc (Dublin Core - chuẩn chung nhất), thuộc nhóm math (Toán học)
     records = sickle.ListRecords(metadataPrefix='oai_dc', set='math', ignore_deleted=True)
+    # records = sickle.ListRecords(metadataPrefix='oai_dc', ignore_deleted=True)
     
     conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
