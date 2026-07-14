@@ -3,6 +3,22 @@ from typing import Optional, List
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
+# ============ Auth Schemas ============
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    full_name: str = Field(..., min_length=2, max_length=100)
+    password: str = Field(..., min_length=6)
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: 'UserOut'
+
+
 # ============ User Schemas ============
 class UserBase(BaseModel):
     email: str
@@ -33,6 +49,19 @@ class DocumentBase(BaseModel):
 
 class DocumentCreate(DocumentBase):
     pass
+
+class DocumentUpdate(BaseModel):
+    """Schema cập nhật tài liệu (chỉ admin). Tất cả các trường đều là tùy chọn."""
+    title: Optional[str] = None
+    authors: Optional[str] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+    cover_url: Optional[str] = None
+    file_path_url: Optional[str] = None
+    publication_year: Optional[int] = None
+    total_copies: Optional[int] = None
+    available_copies: Optional[int] = None
+    is_open_access: Optional[bool] = None
 
 class DocumentOut(DocumentBase):
     id: int
@@ -74,6 +103,7 @@ class BorrowRecordOut(BaseModel):
     return_date: Optional[datetime] = None
     status: str
     document: Optional[DocumentOut] = None
+    user: Optional[UserOut] = None
     days_remaining: Optional[int] = None
     model_config = ConfigDict(from_attributes=True)
 

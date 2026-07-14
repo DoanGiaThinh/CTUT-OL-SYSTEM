@@ -3,9 +3,11 @@ import codecs
 if sys.stdout.encoding != 'utf-8':
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from database import SessionLocal, engine, Base
 import models
+from auth import hash_password
+
 
 def seed_database():
     Base.metadata.create_all(bind=engine)
@@ -17,12 +19,31 @@ def seed_database():
             demo_user = models.User(
                 email="sinhvien@ctut.edu.vn",
                 full_name="Đoàn Gia Thịnh (Sinh viên CTUT)",
-                role="student"
+                role="student",
+                hashed_password=hash_password("123456")
             )
             db.add(demo_user)
             db.commit()
             db.refresh(demo_user)
             print(f"Đã tạo user mẫu: {demo_user.full_name}")
+        else:
+            print(f"Đã tồn tại user mẫu: {demo_user.full_name}")
+
+        # Tạo tài khoản admin nếu chưa có
+        admin_user = db.query(models.User).filter_by(email="admincds@ctut.edu.vn").first()
+        if not admin_user:
+            admin_user = models.User(
+                email="admincds@ctut.edu.vn",
+                full_name="Quản trị viên Thư viện Số (CTUT)",
+                role="admin",
+                hashed_password=hash_password("Admin@CTUT2024")
+            )
+            db.add(admin_user)
+            db.commit()
+            db.refresh(admin_user)
+            print(f"Đã tạo tài khoản admin: {admin_user.email}")
+        else:
+            print(f"Đã tồn tại tài khoản admin: {admin_user.email}")
 
         if db.query(models.Document).count() == 0:
             sample_docs = [

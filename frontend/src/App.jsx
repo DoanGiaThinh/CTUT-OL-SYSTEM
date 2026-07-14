@@ -8,6 +8,9 @@ import InternalLibrary from './pages/InternalLibrary';
 import DocumentDetail from './pages/DocumentDetail';
 import Dashboard from './pages/Dashboard';
 import AcademicSearch from './pages/AcademicSearch';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import AdminPanel from './pages/AdminPanel';
 
 export default function App() {
   return (
@@ -22,6 +25,9 @@ export default function App() {
               <Route path="/library/:id" element={<DocumentDetail />} />
               <Route path="/search" element={<AcademicSearch />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/admin" element={<AdminPanel />} />
             </Routes>
           </main>
           <Footer />

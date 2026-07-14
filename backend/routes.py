@@ -5,8 +5,13 @@ from sqlalchemy.orm import Session
 from database import get_db
 import models, schemas
 from external_api import search_all_external
+from auth import (
+    hash_password, verify_password, create_access_token,
+    get_current_user, get_current_user_optional, require_admin
+)
 
 router = APIRouter()
+
 
 # ============ Helper Lấy User Mặc định / Demo ============
 def get_current_user_or_demo(user_id: Optional[int] = None, db: Session = Depends(get_db)) -> models.User:
@@ -394,3 +399,171 @@ def delete_saved_article(id: int, user_id: Optional[int] = None, db: Session = D
 @router.get("/user/me", response_model=schemas.UserOut)
 def get_user_profile(user_id: Optional[int] = None, db: Session = Depends(get_db)):
     return get_current_user_or_demo(user_id, db)
+
+
+# =========================================================================
+# 6. API XÁC THỰC (AUTHENTICATION) - Đăng ký / Đăng nhập / Thông tin cá nhân
+# =========================================================================
+
+@router.post("/auth/register", response_model=schemas.TokenResponse, status_code=201)
+def register(payload: schemas.RegisterRequest, db: Session = Depends(get_db)):
+    """
+    Đăng ký tài khoản mới (role mặc định: student).
+    Trả về JWT token ngay sau khi đăng ký thành công.
+    """
+    existing = db.query(models.User).filter(models.User.email == payload.email).first()
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email này đã được sử dụng để đăng ký tài khoản. Vui lòng dùng email khác hoặc đăng nhập."
+        )
+
+    new_user = models.User(
+        email=payload.email,
+        full_name=payload.full_name,
+        hashed_password=hash_password(payload.password),
+        role="student"
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
+    return schemas.TokenResponse(
+        access_token=token,
+        token_type="bearer",
+        user=schemas.UserOut.model_validate(new_user)
+    )
+
+
+@router.post("/auth/login", response_model=schemas.TokenResponse)
+def login(payload: schemas.LoginRequest, db: Session = Depends(get_db)):
+    """
+    Đăng nhập bằng email và mật khẩu.
+    Trả về JWT access token (thời hạn 24 giờ).
+    """
+    user = db.query(models.User).filter(models.User.email == payload.email).first()
+    if not user or not verify_password(payload.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email hoặc mật khẩu không đúng. Vui lòng kiểm tra lại.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    token = create_access_token({"sub": str(user.id), "role": user.role})
+    return schemas.TokenResponse(
+        access_token=token,
+        token_type="bearer",
+        user=schemas.UserOut.model_validate(user)
+    )
+
+
+@router.get("/auth/me", response_model=schemas.UserOut)
+def get_auth_profile(current_user: models.User = Depends(get_current_user)):
+    """Lấy thông tin người dùng hiện tại từ JWT token."""
+    return schemas.UserOut.model_validate(current_user)
+
+
+# =========================================================================
+# 7. API QUẢN TRỊ VIÊN (ADMIN ONLY)
+# =========================================================================
+
+@router.get("/admin/documents", response_model=List[schemas.DocumentOut])
+def admin_list_documents(
+    query: Optional[str] = None,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)
+):
+    """[ADMIN] Lấy toàn bộ danh sách tài liệu trong hệ thống."""
+    q = db.query(models.Document)
+    if query:
+        q = q.filter(
+            models.Document.title.ilike(f"%{query}%") |
+            models.Document.authors.ilike(f"%{query}%")
+        )
+    return [schemas.DocumentOut.model_validate(d) for d in q.order_by(models.Document.id.desc()).all()]
+
+
+@router.post("/admin/documents", response_model=schemas.DocumentOut, status_code=201)
+def admin_create_document(
+    payload: schemas.DocumentCreate,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)
+):
+    """[ADMIN] Thêm tài liệu mới vào kho thư viện số."""
+    new_doc = models.Document(**payload.model_dump())
+    db.add(new_doc)
+    db.commit()
+    db.refresh(new_doc)
+    return schemas.DocumentOut.model_validate(new_doc)
+
+
+@router.put("/admin/documents/{id}", response_model=schemas.DocumentOut)
+def admin_update_document(
+    id: int,
+    payload: schemas.DocumentUpdate,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)
+):
+    """[ADMIN] Cập nhật thông tin tài liệu (chỉ truyền các trường cần sửa)."""
+    doc = db.query(models.Document).filter(models.Document.id == id).first()
+    if not doc:
+        raise HTTPException(status_code=404, detail="Không tìm thấy tài liệu.")
+
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(doc, key, value)
+
+    db.commit()
+    db.refresh(doc)
+    return schemas.DocumentOut.model_validate(doc)
+
+
+@router.delete("/admin/documents/{id}")
+def admin_delete_document(
+    id: int,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)
+):
+    """[ADMIN] Xóa tài liệu khỏi kho thư viện (kèm toàn bộ bản ghi mượn liên quan)."""
+    doc = db.query(models.Document).filter(models.Document.id == id).first()
+    if not doc:
+        raise HTTPException(status_code=404, detail="Không tìm thấy tài liệu.")
+    db.delete(doc)
+    db.commit()
+    return {"success": True, "message": f"Đã xóa tài liệu '{doc.title}' thành công."}
+
+
+@router.get("/admin/borrows", response_model=List[schemas.BorrowRecordOut])
+def admin_list_all_borrows(
+    status_filter: Optional[str] = None,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)
+):
+    """[ADMIN] Xem toàn bộ lịch sử mượn/trả trong hệ thống."""
+    q = db.query(models.BorrowRecord)
+    if status_filter:
+        q = q.filter(models.BorrowRecord.status == status_filter)
+    records = q.order_by(models.BorrowRecord.borrow_date.desc()).all()
+
+    now = datetime.utcnow()
+    out_list = []
+    for r in records:
+        out = schemas.BorrowRecordOut.model_validate(r)
+        if r.document:
+            out.document = schemas.DocumentOut.model_validate(r.document)
+        if r.user:
+            out.user = schemas.UserOut.model_validate(r.user)
+        out.days_remaining = max(0, (r.due_date - now).days)
+        out_list.append(out)
+    return out_list
+
+
+@router.get("/admin/users", response_model=List[schemas.UserOut])
+def admin_list_users(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)
+):
+    """[ADMIN] Xem danh sách toàn bộ người dùng trong hệ thống."""
+    return [schemas.UserOut.model_validate(u) for u in db.query(models.User).order_by(models.User.created_at.desc()).all()]
+
