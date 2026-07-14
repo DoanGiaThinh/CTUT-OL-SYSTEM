@@ -26,8 +26,13 @@ def seed_database():
             db.commit()
             db.refresh(demo_user)
             print(f"Đã tạo user mẫu: {demo_user.full_name}")
+        elif not demo_user.hashed_password:
+            demo_user.hashed_password = hash_password("123456")
+            db.commit()
+            print(f"Đã cập nhật mật khẩu cho user mẫu: {demo_user.full_name}")
         else:
             print(f"Đã tồn tại user mẫu: {demo_user.full_name}")
+
 
         # Tạo tài khoản admin nếu chưa có
         admin_user = db.query(models.User).filter_by(email="admincds@ctut.edu.vn").first()
@@ -42,8 +47,13 @@ def seed_database():
             db.commit()
             db.refresh(admin_user)
             print(f"Đã tạo tài khoản admin: {admin_user.email}")
+        elif not admin_user.hashed_password:
+            admin_user.hashed_password = hash_password("Admin@CTUT2024")
+            db.commit()
+            print(f"Đã cập nhật mật khẩu cho tài khoản admin: {admin_user.email}")
         else:
             print(f"Đã tồn tại tài khoản admin: {admin_user.email}")
+
 
         if db.query(models.Document).count() == 0:
             sample_docs = [
