@@ -4,10 +4,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from database import engine, Base
+from seed import seed_database
 from routes import router
 
-# Khởi tạo bảng CSDL tự động nếu chưa có
+# Khởi tạo bảng CSDL tự động và nạp dữ liệu mẫu nếu chưa có
 Base.metadata.create_all(bind=engine)
+try:
+    seed_database()
+except Exception as e:
+    print(f"Lỗi khi kiểm tra/nạp dữ liệu ban đầu: {e}")
 
 app = FastAPI(
     title="Open Digital Library API - CTUT",

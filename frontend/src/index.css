@@ -8,22 +8,22 @@
   }
 }
 
-/* Custom glassmorphism & gradients */
+/* Custom White & Blue card utilities */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(13, 59, 102, 0.12);
 }
 
 .glass-card {
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px -3px rgba(13, 59, 102, 0.06);
   transition: all 0.25s ease;
 }
 
 .glass-card:hover {
-  border-color: rgba(16, 185, 129, 0.4);
+  border-color: #0d3b66;
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 12px 25px -5px rgba(13, 59, 102, 0.15);
 }

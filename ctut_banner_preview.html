@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Template V3 - Thư viện Số CTUT (Màu chủ đạo Trắng & Xanh dương)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            ctut: {
+              blue: '#0d3b66',      /* Xanh dương chủ đạo CTUT */
+              darkblue: '#082540',
+              lightblue: '#e6f0fa',
+              gold: '#f4d35e',
+              amber: '#ee964b',
+              teal: '#028090',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .bg-dots {
+      background-image: radial-gradient(#0d3b66 0.75px, transparent 0.75px);
+      background-size: 20px 20px;
+    }
+    .card-shadow {
+      box-shadow: 0 10px 30px -10px rgba(13, 59, 102, 0.15);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen selection:bg-blue-600 selection:text-white">
+
+  <!-- ==================== TOP CONTACT & HOTLINE BAR (XANH DƯƠNG ĐẬM CTUT) ==================== -->
+  <div class="bg-[#0d3b66] text-white text-xs py-2.5 px-4 sm:px-8 border-b border-blue-800 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-4 text-blue-100">
+        <span class="flex items-center gap-1.5 hover:text-amber-300 transition-colors cursor-pointer font-medium">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-300"></i>
+          Số 256 Nguyễn Văn Cừ, P. An Hòa, Q. Ninh Kiều, TP. Cần Thơ
+        </span>
+        <span class="hidden md:flex items-center gap-1.5 hover:text-amber-300 transition-colors cursor-pointer font-medium">
+          <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-300"></i>
+          thuvien@ctuet.edu.vn
+        </span>
+      </div>
+      <div class="flex items-center gap-4 font-semibold">
+        <span class="text-amber-300 flex items-center gap-1">
+          <i data-lucide="phone-call" class="w-3.5 h-3.5 animate-pulse"></i>
+          Hotline: (0292) 3894 050
+        </span>
+        <span class="text-blue-400">|</span>
+        <a href="https://www.ctuet.edu.vn/" target="_blank" class="text-white hover:text-amber-300 transition-colors flex items-center gap-1">
+          Cổng thông tin CTUT
+          <i data-lucide="external-link" class="w-3 h-3"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1. FULL-WIDTH HEADER BANNER (BANNER 1 - NỀN TRẮNG SẠCH) ==================== -->
+  <div class="w-full bg-white border-b border-slate-200 relative overflow-hidden group">
+    <div class="max-w-7xl mx-auto">
+      <!-- Ảnh Banner 1 từ thư mục image/banner-ctut-1.jpg -->
+      <img 
+        src="image/banner-ctut-1.jpg" 
+        alt="Banner Trường Đại học Kỹ thuật - Công nghệ Cần Thơ" 
+        class="w-full h-auto object-cover max-h-[220px] sm:max-h-[260px] md:max-h-[300px] transition-transform duration-700 group-hover:scale-[1.008]"
+        onerror="this.src='https://via.placeholder.com/1600x300/0d3b66/ffffff?text=BANNER+CTUT+1'"
+      />
+    </div>
+  </div>
+
+  <!-- ==================== 2. NAVIGATION BAR (NỀN TRẮNG - CHỮ XANH DƯƠNG SANG TRỌNG) ==================== -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14 sm:h-16">
+
+        <!-- Left: Logo & Tên khi cuộn trang -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-9 h-9 rounded-full bg-white p-1 flex items-center justify-center border border-blue-200 shadow-sm">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Logo_ctuet.png" 
+              alt="Logo CTUT" 
+              class="w-full h-full object-contain group-hover:scale-110 transition-transform"
+            />
+          </div>
+          <div>
+            <span class="text-sm sm:text-base font-extrabold font-heading text-[#0d3b66] tracking-tight">
+              THƯ VIỆN SỐ CTUT
+            </span>
+            <p class="text-[10px] text-slate-500 hidden sm:block font-medium leading-none">Open Digital Library</p>
+          </div>
+        </a>
+
+        <!-- Center: Navigation Tabs (Đúng 5 tab mẫu: Trang Chủ | Giới Thiệu | Thư viện số | Tin tức | Liên hệ) -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+          <a href="#" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-[#0d3b66] text-white shadow-md shadow-blue-900/20">
+            <i data-lucide="home" class="w-4 h-4 text-amber-300"></i>
+            Trang Chủ
+          </a>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-[#0d3b66] hover:bg-blue-50 transition-all">
+            <i data-lucide="info" class="w-4 h-4 text-[#0d3b66]"></i>
+            Giới Thiệu
+          </a>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-[#0d3b66] hover:bg-blue-50 transition-all">
+            <i data-lucide="library" class="w-4 h-4 text-[#0d3b66]"></i>
+            Thư viện số
+          </a>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-[#0d3b66] hover:bg-blue-50 transition-all">
+            <i data-lucide="newspaper" class="w-4 h-4 text-[#0d3b66]"></i>
+            Tin tức
+          </a>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-[#0d3b66] hover:bg-blue-50 transition-all">
+            <i data-lucide="phone" class="w-4 h-4 text-[#0d3b66]"></i>
+            Liên hệ
+          </a>
+        </nav>
+
+        <!-- Right: Auth Buttons (Nổi bật với Xanh dương & Vàng Gold) -->
+        <div class="flex items-center gap-3">
+          <a href="#" class="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-sm font-semibold text-[#0d3b66] hover:bg-blue-50 transition-all">
+            <i data-lucide="log-in" class="w-4 h-4"></i>
+            Đăng nhập
+          </a>
+          <a href="#" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-[#0d3b66] hover:bg-[#082540] transition-all shadow-md shadow-blue-900/20 hover:scale-105 active:scale-95">
+            <i data-lucide="user-check" class="w-4 h-4 text-amber-300"></i>
+            Tài khoản CTUT
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 3. HERO SECTION (NỀN TRẮNG SÁNG & XANH DƯƠNG NHẠT) ==================== -->
+  <section class="relative overflow-hidden pt-8 pb-24 bg-gradient-to-b from-blue-50/60 via-white to-slate-50">
+    <!-- Nền họa tiết chấm bi xanh nhạt tinh tế -->
+    <div class="absolute inset-0 bg-dots opacity-30 pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
+
+      <!-- HERO BANNER 2 CARD (TRUNG TÂM NỔI BẬT) -->
+      <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-blue-200 shadow-xl group bg-white">
+        <div class="relative">
+          <img 
+            src="image/banner-ctut-2.jpg" 
+            alt="Hero Banner Thư Viện CTUT" 
+            class="w-full h-auto object-cover max-h-[380px] sm:max-h-[440px] md:max-h-[480px] transition-transform duration-700 group-hover:scale-[1.01]"
+            onerror="this.src='https://via.placeholder.com/1600x480/0d3b66/ffffff?text=BANNER+CTUT+2+-+THU+VIEN+CTUT'"
+          />
+        </div>
+        <!-- Thẻ thông điệp nổi bật ở góc banner -->
+        <div class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 text-[#0d3b66] text-xs font-bold shadow-lg">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-500 animate-spin" style="animation-duration: 8s;"></i>
+          Nơi Khởi Đầu Tri Thức &mdash; Mở Rộng Tương Lai
+        </div>
+      </div>
+
+      <!-- KHUNG TRA CỨU HỌC LIỆU SÁNG TẠO (TRẮNG SẠCH - VIỀN XANH DƯƠNG) -->
+      <div class="max-w-4xl mx-auto">
+        <div class="p-6 sm:p-8 rounded-3xl bg-white border border-blue-200 shadow-2xl relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-blue-100/40 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="text-center space-y-2 mb-6">
+            <span class="px-3.5 py-1 rounded-full bg-blue-100 text-[#0d3b66] text-xs font-bold uppercase tracking-wider border border-blue-200">
+              Cổng Tra Cứu Thông Minh CTUT
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold font-heading text-[#0d3b66] pt-1">
+              Tìm Kiếm Học Liệu & Cơ Sở Dữ Liệu Số
+            </h2>
+            <p class="text-sm text-slate-600 max-w-xl mx-auto">
+              Truy cập nhanh hơn 10,000 tài liệu nội bộ, giáo trình điện tử và các bài báo khoa học quốc tế (arXiv, DOAJ)
+            </p>
+          </div>
+
+          <!-- Search Bar Input + Button -->
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-grow flex items-center">
+              <i data-lucide="search" class="absolute left-4.5 w-5 h-5 text-[#0d3b66]"></i>
+              <input 
+                type="text" 
+                placeholder="Nhập tên sách, tác giả, mã tài liệu hoặc từ khóa Kỹ thuật - Công nghệ..." 
+                class="w-full bg-slate-50 text-slate-800 placeholder-slate-400 pl-12 pr-4 py-4 rounded-2xl border border-blue-200 focus:outline-none focus:border-[#0d3b66] focus:bg-white focus:ring-4 focus:ring-blue-500/15 text-sm font-medium transition-all"
+              />
+            </div>
+            <button class="flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-[#0d3b66] hover:bg-[#082540] text-white font-extrabold text-sm transition-all shadow-lg shadow-blue-900/20 flex-shrink-0">
+              <i data-lucide="search" class="w-4 h-4 text-amber-300"></i>
+              Tìm kiếm tài liệu
+            </button>
+          </div>
+
+          <!-- Chuyên ngành mũi nhọn Pill Tags -->
+          <div class="flex flex-wrap items-center justify-center gap-2 mt-6 pt-4 border-t border-slate-100 text-xs text-slate-600">
+            <span class="font-bold text-[#0d3b66]">Chuyên ngành:</span>
+            <span class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-[#0d3b66] hover:text-white text-[#0d3b66] cursor-pointer transition-all border border-blue-200/60 font-semibold">💻 Công nghệ Thông tin</span>
+            <span class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-[#0d3b66] hover:text-white text-[#0d3b66] cursor-pointer transition-all border border-blue-200/60 font-semibold">⚡ Kỹ thuật Điện - Điện tử</span>
+            <span class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-[#0d3b66] hover:text-white text-[#0d3b66] cursor-pointer transition-all border border-blue-200/60 font-semibold">🏗️ Kỹ thuật Xây dựng</span>
+            <span class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-[#0d3b66] hover:text-white text-[#0d3b66] cursor-pointer transition-all border border-blue-200/60 font-semibold">🧪 Công nghệ Sinh - Hóa</span>
+            <span class="px-3 py-1.5 rounded-xl bg-amber-500/15 text-amber-700 hover:bg-amber-500 hover:text-white cursor-pointer transition-all border border-amber-300 font-bold flex items-center gap-1">
+              <i data-lucide="unlock" class="w-3.5 h-3.5"></i> Open Access 100%
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK STATS CARDS (NỀN TRẮNG - VIỀN XANH DƯƠNG SANG TRỌNG) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pt-2">
+        <div class="p-5 rounded-2xl bg-white border border-blue-100 shadow-md hover:shadow-lg transition-shadow flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0d3b66] flex items-center justify-center flex-shrink-0 border border-blue-200">
+            <i data-lucide="book-open" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <p class="text-2xl font-extrabold font-heading text-[#0d3b66]">10,000+</p>
+            <p class="text-xs text-slate-600 font-medium">Tài liệu & Giáo trình</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white border border-blue-100 shadow-md hover:shadow-lg transition-shadow flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0 border border-amber-200">
+            <i data-lucide="users" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <p class="text-2xl font-extrabold font-heading text-[#0d3b66]">5,000+</p>
+            <p class="text-xs text-slate-600 font-medium">Sinh viên & Giảng viên</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white border border-blue-100 shadow-md hover:shadow-lg transition-shadow flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-200">
+            <i data-lucide="globe" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <p class="text-2xl font-extrabold font-heading text-[#0d3b66]">100%</p>
+            <p class="text-xs text-slate-600 font-medium">Kết nối Số hóa</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white border border-blue-100 shadow-md hover:shadow-lg transition-shadow flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 border border-emerald-200">
+            <i data-lucide="clock" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <p class="text-2xl font-extrabold font-heading text-[#0d3b66]">24/7</p>
+            <p class="text-xs text-slate-600 font-medium">Truy cập mọi lúc</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== PREVIEW FOOTER ==================== -->
+  <footer class="py-10 bg-white border-t border-slate-200 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p class="font-bold text-[#0d3b66]">BẢN XEM THỬ GIAO DIỆN V3 (TRẮNG & XANH DƯƠNG CHỦ ĐẠO) &mdash; TRƯỜNG ĐẠI HỌC KỸ THUẬT - CÔNG NGHỆ CẦN THƠ</p>
+      <p>&copy; 2024 Trường Đại học Kỹ thuật - Công nghệ Cần Thơ (Can Tho University of Technology). All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
